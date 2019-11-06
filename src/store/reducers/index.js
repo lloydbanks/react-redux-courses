@@ -46,7 +46,20 @@ function articles(state = [], action) {
     }
 }
 
-const rootReducer = combineReducers({visibilityFilter, todos, counter, articles})
+function error(state = null, action) {
+    switch (action.type) {
+        case 'ERROR':
+            state = action.text
+            return state
+        case 'REMOVE_ERROR':
+            state = null
+            return state
+        default:
+            return state
+    }
+}
+
+const rootReducer = combineReducers({visibilityFilter, todos, counter, articles, error})
 export default rootReducer
 
 /*

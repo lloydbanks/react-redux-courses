@@ -14,7 +14,6 @@ const store = createStore(rootReducer, applyMiddleware(forbiddenWordsMiddleware)
 // temp dev
 window.store = store
 
-
 ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'))
 
 serviceWorker.unregister()

@@ -1,13 +1,13 @@
-import {ADD_ARTICLE, ERROR} from '../constants'
+import {ADD_ARTICLE, FORBIDDEN_WORDS, ERROR, REMOVE_ERROR} from '../constants'
 
-const forbiddenWords = ['spam', 'money']
-
-export function forbiddenWordsMiddleware({dispatch}) {
+export function forbiddenWordsMiddleware({getState, dispatch}) {
     return next => {
         return action => {
             if(action.type === ADD_ARTICLE) {
-                if(forbiddenWords.includes(action.article)) {
-                    return dispatch({type: ERROR, payload: 'bad word'})
+                if(FORBIDDEN_WORDS.includes(action.article)) {
+                    return dispatch({type: ERROR, text: 'Bad word!'})
+                } else if(getState().error) {
+                    dispatch({type: REMOVE_ERROR})
                 }
             }
 

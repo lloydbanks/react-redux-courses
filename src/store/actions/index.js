@@ -6,10 +6,3 @@ export function addArticle(article) {
         article
     }
 }
-
-export function addError(error) {
-    return {
-        type: ERROR,
-        payload: error
-    }
-}
