@@ -1,8 +1,22 @@
-import {ADD_ARTICLE, ERROR} from '../constants'
+import {ADD_ARTICLE, INCREMENT, DECREMENT} from '../constants'
 
-export function addArticle(article) {
+function addArticle(article) {
     return {
         type: ADD_ARTICLE,
         article
     }
 }
+
+function increment() {
+    return {
+        type: INCREMENT
+    }
+}
+
+function decrement() {
+    return {
+        type: DECREMENT
+    }
+}
+
+export {addArticle, increment, decrement}
