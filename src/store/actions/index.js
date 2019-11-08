@@ -1,4 +1,4 @@
-import {ADD_TODO, EDIT_TODO, REMOVE_TODO, ENABLE_TODO, INCREMENT, DECREMENT} from '../constants'
+import {ADD_TODO, EDIT_TODO, REMOVE_TODO, ENABLE_TODO, SELECT_TODO, INCREMENT, DECREMENT} from '../constants'
 
 function increment() {
     return {type: INCREMENT}
@@ -12,16 +12,20 @@ function addToDo(todo) {
     return {type: ADD_TODO, text: todo}
 }
 
-function removeToDo(id) {
-    return {type: REMOVE_TODO, id}
+function removeToDo(index) {
+    return {type: REMOVE_TODO, index}
 }
 
-function editToDo({id, text}) {
-    return {type: EDIT_TODO, id, text}
+function editToDo({index, text}) {
+    return {type: EDIT_TODO, index, text}
 }
 
-function enableToDo(id) {
-    return {type: ENABLE_TODO, id}
+function enableToDo(index) {
+    return {type: ENABLE_TODO, index}
 }
 
-export {addToDo, editToDo, removeToDo, enableToDo, increment, decrement}
+function selectToDo(todo) {
+    return {type: SELECT_TODO, todo}
+}
+
+export {addToDo, editToDo, removeToDo, enableToDo, selectToDo, increment, decrement}
