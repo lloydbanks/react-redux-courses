@@ -1,5 +1,5 @@
-import {ADD_ARTICLE} from '../constants'
 import {combineReducers} from 'redux'
+import {ADD_TODO, REMOVE_TODO, ENABLE_TODO, EDIT_TODO} from '../constants'
 
 function visibilityFilter(state = 'SHOW_ALL', action = {}) {
     if(action.type === 'SET_VISIBILITY_FILTER') return action.filter
@@ -7,10 +7,24 @@ function visibilityFilter(state = 'SHOW_ALL', action = {}) {
     return state
 }
 
-function todos(state = [], action = {}) {
+function todos(state = [{id: 0, text: 'test', disabled: true}], action = {}) {
     switch(action.type) {
-        case 'ADD_TODO':
-            return [...state, {text: action.text, completed: false}]
+        case ADD_TODO:
+            return [...state, {id: Math.random(), text: action.text, completed: false, disabled: true}]
+        case REMOVE_TODO:
+            return state.filter(todo => todo.id !== action.id)
+        case ENABLE_TODO:
+            return state.map(todo => {
+                if(todo.id === action.id) return {...todo, disabled: false}
+
+                return todo
+            })
+        case EDIT_TODO:
+            return state.map(todo => {
+                if(todo.id === action.id) return {...todo, text: action.text}
+
+                return todo
+            })
         case 'COMPLETE_TODO':
             return state.map((todo, index) => {
                 if(index === action.index) {
@@ -37,15 +51,6 @@ function counter(state = 0, action) {
     }
 }
 
-function articles(state = [], action) {
-    switch (action.type) {
-        case ADD_ARTICLE:
-            return [...state, action.article]
-        default:
-            return state
-    }
-}
-
 function error(state = null, action) {
     switch (action.type) {
         case 'ERROR':
@@ -59,26 +64,5 @@ function error(state = null, action) {
     }
 }
 
-const rootReducer = combineReducers({visibilityFilter, todos, counter, articles, error})
+const rootReducer = combineReducers({visibilityFilter, todos, counter, error})
 export default rootReducer
-
-/*
-const initialState = {
-    articles: [1, 2, 3],
-    counter: 0,
-}
-
-function rootReducer(state = initialState, action) {
-    if(action.type === ADD_ARTICLE) {
-        return {...state, articles: [...state.articles, action.payload]}
-    } else if(action.type === ERROR) {
-        return {...state, errors: action.payload}
-    } else if(action.type === 'INCREMENT') {
-        return {...state, counter: state.counter + 1}
-    } else if(action.type === 'DECREMENT') {
-        return {...state, counter: state.counter - 1}
-    }
-
-    return state
-}
-*/
