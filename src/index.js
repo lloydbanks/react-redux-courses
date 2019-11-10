@@ -5,11 +5,15 @@ import * as serviceWorker from './serviceWorker'
 
 // store
 import rootReducer from './store/reducers'
-import {createStore, applyMiddleware} from 'redux'
+import {createStore, applyMiddleware, compose} from 'redux'
 import {Provider} from 'react-redux'
 import {forbiddenWordsMiddleware} from './store/middleware'
 
-const store = createStore(rootReducer, applyMiddleware(forbiddenWordsMiddleware))
+const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+const store = createStore(
+    rootReducer,
+    composeEnhancer(applyMiddleware(forbiddenWordsMiddleware))
+)
 
 // temp dev
 window.store = store
