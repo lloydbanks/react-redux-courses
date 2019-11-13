@@ -1,5 +1,26 @@
 import {ADD_TODO, EDIT_TODO, REMOVE_TODO, ENABLE_TODO, SELECT_TODO, INCREMENT, DECREMENT} from '../constants'
 
+function getArticles() {
+    return (dispatch, getState) => {
+        dispatch({type: 'GET_ARTICLES_START'})
+
+        fetch('https://jsonplaceholder.typicode.com/posts')
+            .then(data => data.json())
+            .then(articles => {
+                setTimeout(() => {
+                    dispatch({
+                        type: 'GET_ARTICLES_SUCCESS',
+                        articles: articles
+                    })
+                }, 1000)
+            })
+            .catch(error => {
+                console.log('error', error)
+                dispatch(err => ({type: 'GET_ARTICLES_ERROR', error}))
+            })
+    }
+}
+
 function increment() {
     return {type: INCREMENT}
 }
@@ -28,4 +49,4 @@ function selectToDo(todo) {
     return {type: SELECT_TODO, todo}
 }
 
-export {addToDo, editToDo, removeToDo, enableToDo, selectToDo, increment, decrement}
+export {getArticles, addToDo, editToDo, removeToDo, enableToDo, selectToDo, increment, decrement}

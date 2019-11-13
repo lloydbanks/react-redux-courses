@@ -1,10 +1,30 @@
 import {combineReducers} from 'redux'
 import {ADD_TODO, REMOVE_TODO, ENABLE_TODO, EDIT_TODO, SELECT_TODO, INCREMENT} from '../constants'
 
-function visibilityFilter(state = 'SHOW_ALL', action = {}) {
-    if(action.type === 'SET_VISIBILITY_FILTER') return action.filter
-
-    return state
+function articles(state = {data: [], isLoading: false, error: null}, action) {
+    switch(action.type) {
+        case 'GET_ARTICLES_SUCCESS':
+            return {
+                ...state,
+                data: action.articles.splice(0, 10),
+                isLoading: false
+            }
+        case 'GET_ARTICLES_START':
+            return {
+                ...state,
+                isLoading: true,
+                error: null
+            }
+        case 'GET_ARTICLES_ERROR':
+            return {
+                ...state,
+                data: [],
+                isLoading: false,
+                error: action.error
+            }
+        default:
+            return state
+    }
 }
 
 function todos(state = [{id: 0, text: 'test', disabled: true}], action = {}) {
@@ -121,5 +141,5 @@ function error(state = null, action) {
     }
 }
 
-const rootReducer = combineReducers({visibilityFilter, todos, todosObject, counter, error})
+const rootReducer = combineReducers({articles, todos, todosObject, counter, error})
 export default rootReducer

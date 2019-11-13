@@ -1,21 +1,20 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import Form from './add'
-import {FORBIDDEN_WORDS} from '../../store/constants'
 
-const mapStateToProps = ({articles, error}) => ({articles, error})
+const mapStateToProps = ({articles, isLoading, error}) => {
+    return {articles: articles.data, isLoading: articles.isLoading, error: articles.error}
+}
 
-const List = ({articles, error}) => {
+const List = ({articles, isLoading, error}) => {
+    if(isLoading) return <div>Loading...</div>
+    if(error) return <div>Error: {error}</div>
+
     return (
         <>
             <h2>Articles</h2>
             <ul>
-                {articles.map((article, index) => <li key={index}>{article}</li>)}
+                {articles.map(article => <li key={article.id}>{article.title}</li>)}
             </ul>
-
-            <h2>Add new</h2>
-            {<p>{error ? error : 'No bad words: ' + FORBIDDEN_WORDS}</p>}
-            <Form />
         </>
     )
 }
