@@ -1,5 +1,6 @@
 import {combineReducers} from 'redux'
 import {ADD_TODO, REMOVE_TODO, ENABLE_TODO, EDIT_TODO, SELECT_TODO, INCREMENT} from '../constants'
+import produce from 'immer'
 
 function articles(state = {data: [], isLoading: false, error: null}, action) {
     switch(action.type) {
@@ -67,55 +68,29 @@ const initialTodosObject = {
     }
 }
 
-function todosObject(state = initialTodosObject, action = {}) {
-    let i = parseInt(Object.keys(state.data).slice(-1)) + 1 || 0
+const todosObject = produce((draft, action) => {
+    let i = parseInt(Object.keys(draft.data).slice(-1)) + 1 || 0
 
     return (() => {
         switch(action.type) {
             case ADD_TODO:
-                const newState = {...state}
-                newState['data'][i] = {id: Math.random(), text: action.text, disabled: true}
-
-                return newState
+                draft.data[i] = {id: Math.random(), text: action.text, disabled: true}
+                break
             case REMOVE_TODO:
-                const copy = {
-                    ...state,
-                    data: {
-                        ...state.data
-                    }
-                }
-                delete copy.data[action.index]
-
-                return copy
+                delete draft.data[action.index]
+                break
             case ENABLE_TODO:
-                return {
-                    ...state,
-                    data: {
-                        ...state.data,
-                        [action.index]: {
-                            ...state.data[action.index],
-                            disabled: !state.data[action.index].disabled
-                        }
-                    }
-                }
+                draft.data[action.index].disabled = !draft.data[action.index].disabled
+                break
             case EDIT_TODO:
-                return {
-                    ...state,
-                    data: {
-                        ...state.data,
-                        [action.index]: {
-                            ...state.data[action.index],
-                            text: action.text
-                        }
-                    }
-                }
+                draft.data[action.index].text = action.text
+                break
             case SELECT_TODO:
-                return {...state, selected: action.todo}
-            default:
-                return state
+                draft.selected = action.todo
+                break
         }
     })()
-}
+}, initialTodosObject)
 
 function counter(state = 0, action) {
     switch (action.type) {
