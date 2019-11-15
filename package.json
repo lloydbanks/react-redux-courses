@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "immer": "^5.0.0",
+    "json-server": "^0.15.1",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-scripts": "3.2.0",
@@ -13,7 +14,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "server": "json-server db.json -w -p 8080"
   },
   "eslintConfig": {
     "extends": "react-app"
