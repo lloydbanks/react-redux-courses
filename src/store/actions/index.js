@@ -1,7 +1,30 @@
-import {ADD_TODO, EDIT_TODO, REMOVE_TODO, ENABLE_TODO, SELECT_TODO, INCREMENT, DECREMENT} from '../constants'
+import {
+    ADD_COURSE_BEGIN,
+    ADD_COURSE_SUCCESS,
+    ADD_COURSE_ERROR,
+    ADD_TODO,
+    EDIT_TODO,
+    REMOVE_TODO,
+    ENABLE_TODO,
+    SELECT_TODO,
+    INCREMENT,
+    DECREMENT
+} from '../constants'
 
-function addCourse() {
+import createCourse from '../api'
 
+const addCourse = title => {
+    return dispatch => {
+        dispatch({type: ADD_COURSE_BEGIN})
+
+        createCourse(title)
+            .then(course => {
+                dispatch({type: ADD_COURSE_SUCCESS, payload: course})
+            })
+            .catch(error => {
+                dispatch({type: ADD_COURSE_ERROR, error})
+            })
+    }
 }
 
 function getArticles() {
@@ -53,4 +76,14 @@ function selectToDo(todo) {
     return {type: SELECT_TODO, todo}
 }
 
-export {addCourse, getArticles, addToDo, editToDo, removeToDo, enableToDo, selectToDo, increment, decrement}
+export {
+    addCourse,
+    getArticles,
+    addToDo,
+    editToDo,
+    removeToDo,
+    enableToDo,
+    selectToDo,
+    increment,
+    decrement
+}

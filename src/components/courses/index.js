@@ -1,16 +1,16 @@
 import React, {useState} from 'react'
 import {connect} from 'react-redux'
 
+import {ADD_COURSE_BEGIN, ADD_COURSE_SUCCESS, ADD_COURSE_ERROR} from '../../store/constants'
+import {addCourse} from '../../store/actions'
+
 const CourseList = ({courses, dispatch}) => {
     const [title, setTitle] = useState('')
 
-    const handleSubmit = (e) => {
+    const handleSubmit = e => {
         e.preventDefault()
 
-        dispatch({
-            type: 'ADD_COURSE',
-            payload: {id: Math.random(), title}
-        })
+        dispatch(addCourse(title))
     }
 
     return (

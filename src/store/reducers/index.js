@@ -1,11 +1,24 @@
+import {
+    ADD_COURSE_BEGIN,
+    ADD_COURSE_SUCCESS,
+    ADD_COURSE_ERROR,
+    ADD_TODO,
+    REMOVE_TODO,
+    ENABLE_TODO,
+    EDIT_TODO,
+    SELECT_TODO,
+    INCREMENT,
+    DECREMENT
+} from '../constants'
+
 import {combineReducers} from 'redux'
-import {ADD_TODO, REMOVE_TODO, ENABLE_TODO, EDIT_TODO, SELECT_TODO, INCREMENT, DECREMENT} from '../constants'
 import produce from 'immer'
 
 const courses = produce((draft, action) => {
     switch(action.type) {
-        case 'ADD_COURSE':
+        case ADD_COURSE_SUCCESS:
             draft.push(action.payload)
+
             break
         default:
             return
