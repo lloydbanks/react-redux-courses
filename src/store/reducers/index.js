@@ -1,6 +1,16 @@
 import {combineReducers} from 'redux'
-import {ADD_TODO, REMOVE_TODO, ENABLE_TODO, EDIT_TODO, SELECT_TODO, INCREMENT} from '../constants'
+import {ADD_TODO, REMOVE_TODO, ENABLE_TODO, EDIT_TODO, SELECT_TODO, INCREMENT, DECREMENT} from '../constants'
 import produce from 'immer'
+
+const courses = produce((draft, action) => {
+    switch(action.type) {
+        case 'ADD_COURSE':
+            draft.push(action.payload)
+            break
+        default:
+            return
+    }
+}, [])
 
 function articles(state = {data: [], isLoading: false, error: null}, action) {
     switch(action.type) {
@@ -88,15 +98,17 @@ const todosObject = produce((draft, action) => {
             case SELECT_TODO:
                 draft.selected = action.todo
                 break
+            default:
+                return
         }
     })()
 }, initialTodosObject)
 
 function counter(state = 0, action) {
     switch (action.type) {
-        case 'INCREMENT':
+        case INCREMENT:
             return state + 1
-        case 'DECREMENT':
+        case DECREMENT:
             return state - 1
         default:
             return state
@@ -116,5 +128,5 @@ function error(state = null, action) {
     }
 }
 
-const rootReducer = combineReducers({articles, todos, todosObject, counter, error})
+const rootReducer = combineReducers({courses, articles, todos, todosObject, counter, error})
 export default rootReducer

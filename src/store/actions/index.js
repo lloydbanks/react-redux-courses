@@ -1,5 +1,9 @@
 import {ADD_TODO, EDIT_TODO, REMOVE_TODO, ENABLE_TODO, SELECT_TODO, INCREMENT, DECREMENT} from '../constants'
 
+function addCourse() {
+
+}
+
 function getArticles() {
     return (dispatch, getState) => {
         dispatch({type: 'GET_ARTICLES_START'})
@@ -49,4 +53,4 @@ function selectToDo(todo) {
     return {type: SELECT_TODO, todo}
 }
 
-export {getArticles, addToDo, editToDo, removeToDo, enableToDo, selectToDo, increment, decrement}
+export {addCourse, getArticles, addToDo, editToDo, removeToDo, enableToDo, selectToDo, increment, decrement}
