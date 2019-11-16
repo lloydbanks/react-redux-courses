@@ -1,5 +1,5 @@
 export default function createCourse(title) {
-    return postData('http://localhost:8080/courses', {title})
+    return postData('/courses', {title})
 }
 
 function postData(url = '', data = {}) {
