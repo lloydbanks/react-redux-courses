@@ -1,4 +1,5 @@
 import {
+    GET_COURSES_SUCCESS,
     ADD_COURSE_BEGIN,
     ADD_COURSE_SUCCESS,
     ADD_COURSE_ERROR,
@@ -20,6 +21,10 @@ const courses = produce((draft, action) => {
             draft.push(action.payload)
 
             break
+        case GET_COURSES_SUCCESS:
+            draft = action.payload
+
+            return draft
         default:
             return
     }

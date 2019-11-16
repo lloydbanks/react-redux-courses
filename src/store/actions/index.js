@@ -1,4 +1,7 @@
 import {
+    GET_COURSES_BEGIN,
+    GET_COURSES_SUCCESS,
+    GET_COURSES_ERROR,
     ADD_COURSE_BEGIN,
     ADD_COURSE_SUCCESS,
     ADD_COURSE_ERROR,
@@ -11,7 +14,21 @@ import {
     DECREMENT
 } from '../constants'
 
-import createCourse from '../api'
+import {fetchCourses, createCourse} from '../api'
+
+const getCourses = () => {
+    return dispatch => {
+        dispatch({type: GET_COURSES_BEGIN})
+
+        fetchCourses()
+            .then(courses => {
+                dispatch({type: GET_COURSES_SUCCESS, payload: courses})
+            })
+            .catch(error => {
+                dispatch({type: GET_COURSES_ERROR, error})
+            })
+    }
+}
 
 const addCourse = title => {
     return dispatch => {
@@ -77,6 +94,7 @@ function selectToDo(todo) {
 }
 
 export {
+    getCourses,
     addCourse,
     getArticles,
     addToDo,
