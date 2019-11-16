@@ -1,5 +1,7 @@
 import {
+    GET_COURSES_BEGIN,
     GET_COURSES_SUCCESS,
+    GET_COURSES_ERROR,
     ADD_COURSE_BEGIN,
     ADD_COURSE_SUCCESS,
     ADD_COURSE_ERROR,
@@ -18,17 +20,29 @@ import produce from 'immer'
 const courses = produce((draft, action) => {
     switch(action.type) {
         case ADD_COURSE_SUCCESS:
-            draft.push(action.payload)
+            draft.courses.push(action.payload)
+            draft.loading = false
+
+            break
+        case GET_COURSES_BEGIN:
+            draft.loading = true
+            draft.error = false
 
             break
         case GET_COURSES_SUCCESS:
-            draft = action.payload
+            draft.courses = action.payload
+            draft.loading = false
 
-            return draft
+            break
+        case GET_COURSES_ERROR:
+            draft.loading = false
+            draft.error = action.error
+
+            break
         default:
             return
     }
-}, [])
+}, {courses: [], loading: false, error: null})
 
 function articles(state = {data: [], isLoading: false, error: null}, action) {
     switch(action.type) {
