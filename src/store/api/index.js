@@ -1,5 +1,5 @@
-function createCourse(title) {
-    return postData('/courses', {title})
+function createCourse({title, price}) {
+    return postData('/courses', {title, price})
 }
 
 function fetchCourses() {

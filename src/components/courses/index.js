@@ -1,18 +1,11 @@
 import React, {useState} from 'react'
 import {connect} from 'react-redux'
+import Modal from 'react-modal'
+// import {ADD_COURSE_BEGIN, ADD_COURSE_SUCCESS, ADD_COURSE_ERROR} from '../../store/constants'
+import AddForm from './add'
+import {openAddCourseModal, closeAddCourseModal} from '../../store/actions'
 
-import {ADD_COURSE_BEGIN, ADD_COURSE_SUCCESS, ADD_COURSE_ERROR} from '../../store/constants'
-import {addCourse} from '../../store/actions'
-
-const CourseList = ({courses, error, loading, dispatch}) => {
-    const [title, setTitle] = useState('')
-
-    const handleSubmit = e => {
-        e.preventDefault()
-
-        dispatch(addCourse(title))
-    }
-
+const CourseList = ({courses, error, loading, openAddCourseModal, closeAddCourseModal, isOpen}) => {
     if(loading) return <div>Loading...</div>
     if(error) return <div>Error: {error.message}</div>
 
@@ -20,24 +13,29 @@ const CourseList = ({courses, error, loading, dispatch}) => {
         !courses.length ? (
             <div>
                 <h1>Create your first Course</h1>
-                <form onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <label>Enter title:</label>
-                        <input className="form-control" type="text" value={title}
-                               onChange={(e) => setTitle(e.target.value)} disabled={loading} />
-                    </div>
-                    <button className="btn btn-primary" type="submit">Create course</button>
-                </form>
+
+                <AddForm />
             </div>
         ) : (
             <div>
                 <h1>Courses List</h1>
 
-                <ul>
+                <div className="list-group mb-2">
                     {courses.map(course => (
-                        <li key={course.id}>{course.title}</li>
+                        <a className="list-group-item list-group-item-action" key={course.id}>
+                            <div className="d-flex w-100 justify-content-between">
+                                <h5 className="mb-1">{course.title}</h5>
+                            </div>
+                            <small>Price: ${course.price}</small>
+                        </a>
                     ))}
-                </ul>
+                </div>
+
+                <button className="btn btn-primary" onClick={openAddCourseModal}>New course</button>
+
+                <Modal isOpen={isOpen} onRequestClose={closeAddCourseModal}>
+                    <AddForm />
+                </Modal>
             </div>
         )
     )
@@ -46,7 +44,10 @@ const CourseList = ({courses, error, loading, dispatch}) => {
 const mapState = ({courses}) => ({
     courses: Object.values(courses.courses),
     error: courses.error,
-    loading: courses.loading
+    loading: courses.loading,
+    isOpen: courses.addCourseModalOpen
 })
 
-export default connect(mapState)(CourseList)
+const mapDispatch = {openAddCourseModal, closeAddCourseModal}
+
+export default connect(mapState, mapDispatch)(CourseList)

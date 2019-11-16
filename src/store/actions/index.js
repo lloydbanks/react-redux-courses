@@ -5,6 +5,8 @@ import {
     ADD_COURSE_BEGIN,
     ADD_COURSE_SUCCESS,
     ADD_COURSE_ERROR,
+    OPEN_ADD_COURSE_MODAL,
+    CLOSE_ADD_COURSE_MODAL,
     ADD_TODO,
     EDIT_TODO,
     REMOVE_TODO,
@@ -30,11 +32,11 @@ const getCourses = () => {
     }
 }
 
-const addCourse = title => {
+const addCourse = ({title, price}) => {
     return dispatch => {
         dispatch({type: ADD_COURSE_BEGIN})
 
-        createCourse(title)
+        createCourse({title, price})
             .then(course => {
                 dispatch({type: ADD_COURSE_SUCCESS, payload: course})
             })
@@ -43,6 +45,14 @@ const addCourse = title => {
             })
     }
 }
+
+const openAddCourseModal = () => ({
+    type: OPEN_ADD_COURSE_MODAL
+})
+
+const closeAddCourseModal = () => ({
+    type: CLOSE_ADD_COURSE_MODAL
+})
 
 function getArticles() {
     return (dispatch, getState) => {
@@ -96,6 +106,8 @@ function selectToDo(todo) {
 export {
     getCourses,
     addCourse,
+    openAddCourseModal,
+    closeAddCourseModal,
     getArticles,
     addToDo,
     editToDo,

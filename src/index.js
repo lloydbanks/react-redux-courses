@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './components/App'
 import * as serviceWorker from './serviceWorker'
+import Modal from 'react-modal'
 
 // store
 import rootReducer from './store/reducers'
@@ -18,6 +19,7 @@ const store = createStore(
 
 store.dispatch(getCourses())
 
+Modal.setAppElement('#root')
 ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'))
 
 serviceWorker.unregister()

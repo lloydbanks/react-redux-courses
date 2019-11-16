@@ -2,9 +2,11 @@ import {
     GET_COURSES_BEGIN,
     GET_COURSES_SUCCESS,
     GET_COURSES_ERROR,
-    ADD_COURSE_BEGIN,
+    //ADD_COURSE_BEGIN,
     ADD_COURSE_SUCCESS,
     ADD_COURSE_ERROR,
+    OPEN_ADD_COURSE_MODAL,
+    CLOSE_ADD_COURSE_MODAL,
     ADD_TODO,
     REMOVE_TODO,
     ENABLE_TODO,
@@ -22,6 +24,7 @@ const courses = produce((draft, action) => {
         case ADD_COURSE_SUCCESS:
             draft.courses.push(action.payload)
             draft.loading = false
+            draft.addCourseModalOpen = false
 
             break
         case GET_COURSES_BEGIN:
@@ -39,10 +42,23 @@ const courses = produce((draft, action) => {
             draft.error = action.error
 
             break
+        case OPEN_ADD_COURSE_MODAL:
+            draft.addCourseModalOpen = true
+
+            break
+        case CLOSE_ADD_COURSE_MODAL:
+            draft.addCourseModalOpen = false
+
+            break
+        case ADD_COURSE_ERROR:
+            draft.loading = false
+            draft.error = action.error
+
+            break
         default:
             return
     }
-}, {courses: [], loading: false, error: null})
+}, {courses: [], loading: false, error: null, loadingSave: false, loadingError: null, addCourseModalOpen: false})
 
 function articles(state = {data: [], isLoading: false, error: null}, action) {
     switch(action.type) {
