@@ -2,7 +2,7 @@ import React, {useState, useRef, useEffect} from 'react'
 import {connect} from 'react-redux'
 import {addCourse} from '../../store/actions'
 
-function Add({dispatch, loading, error}) {
+function Add({dispatch, hasCourses, loading, error}) {
     const [title, setTitle] = useState('')
     const [price, setPrice] = useState('')
     const inputRef = useRef()
@@ -19,6 +19,11 @@ function Add({dispatch, loading, error}) {
 
     return (
         <form onSubmit={handleSubmit}>
+            {!hasCourses ?
+                <h1>Create your first Course</h1> :
+                <h1>Add new course</h1>
+            }
+
             <div className="form-group">
                 <label>Enter title:</label>
                 <input className="form-control" type="text" value={title}
@@ -31,19 +36,20 @@ function Add({dispatch, loading, error}) {
                     <span className="input-group-text">$</span>
                 </div>
                 <input className="form-control" type="text" value={price}
-                       onChange={(e) => setPrice(e.target.value)} disabled={loading} />
+                       onChange={(e) => setPrice(e.target.value)} />
             </div>
 
-            <button className="btn btn-primary" type="submit">Create course</button>
+            <button className="btn btn-primary" type="submit" disabled={loading}>Create course</button>
 
-            {error ? <p>Error: {error}</p> : null}
+            {error ? <p className="text-danger">Error: {error.message}</p> : null}
         </form>
     )
 }
 
 const mapState = ({courses}) => ({
-    loading: courses.loadingSave,
-    error: courses.error
+    hasCourses: courses.courses.length,
+    loading: courses.formLoading,
+    error: courses.formError
 })
 
 export default connect(mapState)(Add)

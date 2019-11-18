@@ -2,7 +2,7 @@ import {
     GET_COURSES_BEGIN,
     GET_COURSES_SUCCESS,
     GET_COURSES_ERROR,
-    //ADD_COURSE_BEGIN,
+    ADD_COURSE_BEGIN,
     ADD_COURSE_SUCCESS,
     ADD_COURSE_ERROR,
     OPEN_ADD_COURSE_MODAL,
@@ -21,12 +21,6 @@ import produce from 'immer'
 
 const courses = produce((draft, action) => {
     switch(action.type) {
-        case ADD_COURSE_SUCCESS:
-            draft.courses.push(action.payload)
-            draft.loading = false
-            draft.addCourseModalOpen = false
-
-            break
         case GET_COURSES_BEGIN:
             draft.loading = true
             draft.error = false
@@ -50,15 +44,27 @@ const courses = produce((draft, action) => {
             draft.addCourseModalOpen = false
 
             break
-        case ADD_COURSE_ERROR:
+        case ADD_COURSE_BEGIN:
+            draft.formLoading = true
+            draft.formError = false
+
+            break
+        case ADD_COURSE_SUCCESS:
+            draft.courses.push(action.payload)
             draft.loading = false
-            draft.error = action.error
+            draft.addCourseModalOpen = false
+            draft.formLoading = false
+
+            break
+        case ADD_COURSE_ERROR:
+            draft.formLoading = false
+            draft.formError = action.error
 
             break
         default:
             return
     }
-}, {courses: [], loading: false, error: null, loadingSave: false, loadingError: null, addCourseModalOpen: false})
+}, {courses: [], loading: false, error: null, formLoading: false, formError: null, addCourseModalOpen: false})
 
 function articles(state = {data: [], isLoading: false, error: null}, action) {
     switch(action.type) {

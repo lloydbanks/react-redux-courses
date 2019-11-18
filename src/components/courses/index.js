@@ -1,22 +1,15 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
 import Modal from 'react-modal'
-// import {ADD_COURSE_BEGIN, ADD_COURSE_SUCCESS, ADD_COURSE_ERROR} from '../../store/constants'
 import AddForm from './add'
 import {openAddCourseModal, closeAddCourseModal} from '../../store/actions'
 
 const CourseList = ({courses, error, loading, openAddCourseModal, closeAddCourseModal, isOpen}) => {
     if(loading) return <div>Loading...</div>
-    if(error) return <div>Error: {error.message}</div>
+    if(error) return <div className="text-danger">Error: {error.message}</div>
 
     return (
-        !courses.length ? (
-            <div>
-                <h1>Create your first Course</h1>
-
-                <AddForm />
-            </div>
-        ) : (
+        !courses.length ? <AddForm /> : (
             <div>
                 <h1>Courses List</h1>
 
