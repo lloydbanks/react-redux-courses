@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {Link} from '@reach/router'
 import Modal from 'react-modal'
 import AddForm from './add'
 import {openAddCourseModal, closeAddCourseModal} from '../../store/actions'
@@ -15,12 +16,12 @@ const CourseList = ({courses, error, loading, openAddCourseModal, closeAddCourse
 
                 <div className="list-group mb-2">
                     {courses.map(course => (
-                        <a className="list-group-item list-group-item-action" key={course.id}>
+                        <Link to={`/courses/${course.id}`} className="list-group-item list-group-item-action" key={course.id}>
                             <div className="d-flex w-100 justify-content-between">
                                 <h5 className="mb-1">{course.title}</h5>
                             </div>
                             <small>Price: ${course.price}</small>
-                        </a>
+                        </Link>
                     ))}
                 </div>
 

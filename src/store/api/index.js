@@ -1,9 +1,11 @@
+const PREFIX = '/api'
+
 function createCourse({title, price}) {
-    return postData('/courses', {title, price})
+    return postData(PREFIX + '/courses', {title, price})
 }
 
 function fetchCourses() {
-    return getData('/courses')
+    return getData(PREFIX + '/courses')
 }
 
 function postData(url = '', data = {}) {

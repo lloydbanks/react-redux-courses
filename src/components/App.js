@@ -1,14 +1,16 @@
 import React from 'react'
-// import Todos from './todos'
-// import Counter from './counter'
-// import TodosObject from './todos-object'
-// import Articles from './articles'
+import {Router, Redirect} from '@reach/router'
 import Courses from './courses'
+import CourseDetail from './courses/detail'
 
 function App() {
     return (
         <div className="container">
-            <Courses />
+            <Router>
+                <Redirect noThrow from="/" to="/courses" />
+                <Courses path="/courses" />
+                <CourseDetail path="/courses/:id" />
+            </Router>
         </div>
     )
 }
