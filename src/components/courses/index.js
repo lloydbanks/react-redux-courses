@@ -36,7 +36,7 @@ const CourseList = ({courses, error, loading, openAddCourseModal, closeAddCourse
 }
 
 const mapState = ({courses}) => ({
-    courses: Object.values(courses.courses),
+    courses: courses.data,
     error: courses.error,
     loading: courses.loading,
     isOpen: courses.addCourseModalOpen

@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import NotFound from '../404'
 import {Link} from '@reach/router'
 import NewLesson from './newLesson'
+import {getLessonsByCourse, getCourseById} from '../../store/selectors'
 
 const CourseDetail = ({id, course, lessons, loading}) => {
     if(loading) return <div>Loading...</div>
@@ -41,16 +42,10 @@ const CourseDetail = ({id, course, lessons, loading}) => {
 }
 
 const mapState = (state, props) => {
-    const courseId = +props.id
-
     return {
         loading: state.courses.loading,
-        course: state.courses.courses.find(
-            c => +c.id === courseId
-        ),
-        lessons: state.courses.lessons.filter(
-            lesson => +lesson.courseId === courseId
-        )
+        course: getCourseById(state, props),
+        lessons: getLessonsByCourse(state, props)
     }
 }
 
