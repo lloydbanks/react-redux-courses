@@ -19,7 +19,7 @@ import {
     DECREMENT
 } from '../constants'
 
-import {fetchCourses, createCourse} from '../api'
+import {fetchCourses, createCourse, createLesson} from '../api'
 
 const getCourses = () => {
     return dispatch => {
@@ -49,9 +49,17 @@ const addCourse = ({title, price}) => {
     }
 }
 
-const addLesson = (title, courseId) => {
+const addLesson = ({title, courseId}) => {
     return dispatch => {
-        dispatch({type: ADD_LESSON_SUCCESS, payload: {id: Math.random(), title, courseId}})
+        dispatch({type: ADD_LESSON_BEGIN})
+
+        createLesson({title, courseId})
+            .then(course => {
+                dispatch({type: ADD_LESSON_SUCCESS, payload: course})
+            })
+            .catch(error => {
+                dispatch({type: ADD_LESSON_ERROR, error})
+            })
     }
 }
 

@@ -4,6 +4,10 @@ function createCourse({title, price}) {
     return postData(PREFIX + '/courses', {title, price})
 }
 
+function createLesson({title, courseId}) {
+    return postData(PREFIX + '/lessons', {title, courseId})
+}
+
 function fetchCourses() {
     return getData(PREFIX + '/courses')
 }
@@ -22,4 +26,4 @@ function getData(url = '') {
     return fetch(url).then(response => response.json())
 }
 
-export {createCourse, fetchCourses}
+export {createCourse, createLesson, fetchCourses}

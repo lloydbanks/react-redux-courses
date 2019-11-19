@@ -19,7 +19,7 @@ const NewLesson = ({lessons, addLesson, courseId}) => {
     const handleSubmit = e => {
         e.preventDefault()
 
-        addLesson(title, courseId)
+        addLesson({title, courseId})
         inputRef.current.focus()
         reset()
     }
@@ -44,4 +44,4 @@ const NewLesson = ({lessons, addLesson, courseId}) => {
         )
 }
 
-export default connect(null,{addLesson})(NewLesson)
+export default connect(null, {addLesson})(NewLesson)
