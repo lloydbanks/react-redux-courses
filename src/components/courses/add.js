@@ -27,7 +27,7 @@ function Add({dispatch, hasCourses, loading, error}) {
             <div className="form-group">
                 <label>Enter title:</label>
                 <input className="form-control" type="text" value={title}
-                       onChange={(e) => setTitle(e.target.value)} ref={inputRef} />
+                       onChange={e => setTitle(e.target.value)} ref={inputRef} />
             </div>
 
             <label>Enter price:</label>
@@ -36,7 +36,7 @@ function Add({dispatch, hasCourses, loading, error}) {
                     <span className="input-group-text">$</span>
                 </div>
                 <input className="form-control" type="text" value={price}
-                       onChange={(e) => setPrice(e.target.value)} />
+                       onChange={e => setPrice(e.target.value)} />
             </div>
 
             <button className="btn btn-primary" type="submit" disabled={loading}>Create course</button>

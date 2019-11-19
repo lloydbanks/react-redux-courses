@@ -7,6 +7,9 @@ import {
     ADD_COURSE_ERROR,
     OPEN_ADD_COURSE_MODAL,
     CLOSE_ADD_COURSE_MODAL,
+    ADD_LESSON_BEGIN,
+    ADD_LESSON_SUCCESS,
+    ADD_LESSON_ERROR,
     ADD_TODO,
     EDIT_TODO,
     REMOVE_TODO,
@@ -43,6 +46,12 @@ const addCourse = ({title, price}) => {
             .catch(error => {
                 dispatch({type: ADD_COURSE_ERROR, error})
             })
+    }
+}
+
+const addLesson = (title, courseId) => {
+    return dispatch => {
+        dispatch({type: ADD_LESSON_SUCCESS, payload: {id: Math.random(), title, courseId}})
     }
 }
 
@@ -106,6 +115,7 @@ function selectToDo(todo) {
 export {
     getCourses,
     addCourse,
+    addLesson,
     openAddCourseModal,
     closeAddCourseModal,
     getArticles,
