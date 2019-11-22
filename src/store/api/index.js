@@ -1,11 +1,23 @@
 const PREFIX = '/api'
 
 function createCourse({title, price}) {
-    return postData(PREFIX + '/courses', {title, price})
+    return fetchData(PREFIX + '/courses', {title, price})
 }
 
 function createLesson({title, courseId}) {
-    return postData(PREFIX + '/lessons', {title, courseId})
+    return fetchData(PREFIX + '/lessons', {title, courseId})
+}
+
+function updateLesson(lesson) {
+    return putData(PREFIX + `/lessons/${lesson.id}`, lesson)
+}
+
+function postData(url = '', data = {}) {
+    return fetchData(url, data, 'POST')
+}
+
+function putData(url = '', data = {}) {
+    return fetchData(url, data, 'PUT')
 }
 
 function fetchCourses() {
@@ -16,7 +28,7 @@ function fetchLessons(courseId) {
     return getData(PREFIX + '/lessons?courseId=' + courseId)
 }
 
-function postData(url = '', data = {}) {
+function fetchData(url = '', data = {}) {
     return fetch(url, {
         method: 'POST',
         headers: {
@@ -30,4 +42,4 @@ function getData(url = '') {
     return fetch(url).then(response => response.json())
 }
 
-export {createCourse, createLesson, fetchCourses, fetchLessons}
+export {createCourse, createLesson, updateLesson, fetchCourses, fetchLessons}

@@ -13,9 +13,12 @@ import {
     ADD_LESSON_BEGIN,
     ADD_LESSON_SUCCESS,
     ADD_LESSON_ERROR,
+    SAVE_LESSON_BEGIN,
+    SAVE_LESSON_SUCCESS,
+    SAVE_LESSON_ERROR
 } from '../constants'
 
-import {fetchCourses, fetchLessons, createCourse, createLesson} from '../api'
+import {fetchCourses, fetchLessons, createCourse, createLesson, updateLesson} from '../api'
 
 const getCourses = () => {
     return dispatch => {
@@ -69,6 +72,20 @@ const addLesson = ({title, courseId}) => {
             })
             .catch(error => {
                 dispatch({type: ADD_LESSON_ERROR, error})
+            })
+    }
+}
+
+const saveLesson = (lesson) => {
+    return dispatch => {
+        dispatch({type: SAVE_LESSON_BEGIN})
+
+        return updateLesson(lesson)
+            .then(lesson => {
+                dispatch({type: SAVE_LESSON_SUCCESS, payload: lesson})
+            })
+            .catch(error => {
+                dispatch({type: SAVE_LESSON_ERROR, error})
             })
     }
 }
