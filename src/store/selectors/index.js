@@ -6,10 +6,15 @@ const parseCourseId = (state, props) => parseInt(props.id)
 
 export const getLessonsByCourse = createSelector(
     getLessons,
-    parseCourseId,
-    (lessons, courseId) => lessons.filter(
-        lesson => +lesson.courseId === courseId
-    )
+    lessons => Object.values(lessons).sort((a, b) => {
+        if(a.id < b.id) {
+            return -1
+        } else if (a.id > b.id) {
+            return 1
+        } else {
+            return 0
+        }
+    })
 )
 
 export const getCourseById = createSelector(

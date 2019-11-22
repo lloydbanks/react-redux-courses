@@ -12,6 +12,10 @@ function fetchCourses() {
     return getData(PREFIX + '/courses')
 }
 
+function fetchLessons(courseId) {
+    return getData(PREFIX + '/lessons?courseId=' + courseId)
+}
+
 function postData(url = '', data = {}) {
     return fetch(url, {
         method: 'POST',
@@ -26,4 +30,4 @@ function getData(url = '') {
     return fetch(url).then(response => response.json())
 }
 
-export {createCourse, createLesson, fetchCourses}
+export {createCourse, createLesson, fetchCourses, fetchLessons}

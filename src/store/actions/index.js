@@ -7,19 +7,15 @@ import {
     ADD_COURSE_ERROR,
     OPEN_ADD_COURSE_MODAL,
     CLOSE_ADD_COURSE_MODAL,
+    GET_LESSONS_BEGIN,
+    GET_LESSONS_SUCCESS,
+    GET_LESSONS_ERROR,
     ADD_LESSON_BEGIN,
     ADD_LESSON_SUCCESS,
     ADD_LESSON_ERROR,
-    ADD_TODO,
-    EDIT_TODO,
-    REMOVE_TODO,
-    ENABLE_TODO,
-    SELECT_TODO,
-    INCREMENT,
-    DECREMENT
 } from '../constants'
 
-import {fetchCourses, createCourse, createLesson} from '../api'
+import {fetchCourses, fetchLessons, createCourse, createLesson} from '../api'
 
 const getCourses = () => {
     return dispatch => {
@@ -31,6 +27,20 @@ const getCourses = () => {
             })
             .catch(error => {
                 dispatch({type: GET_COURSES_ERROR, error})
+            })
+    }
+}
+
+const getLessons = (courseId) => {
+    return dispatch => {
+        dispatch({type: GET_LESSONS_BEGIN})
+
+        fetchLessons(courseId)
+            .then(lessons => {
+                dispatch({type: GET_LESSONS_SUCCESS, payload: lessons})
+            })
+            .catch(error => {
+                dispatch({type: GET_LESSONS_ERROR, error})
             })
     }
 }
@@ -71,67 +81,11 @@ const closeAddCourseModal = () => ({
     type: CLOSE_ADD_COURSE_MODAL
 })
 
-function getArticles() {
-    return (dispatch, getState) => {
-        dispatch({type: 'GET_ARTICLES_START'})
-
-        fetch('https://jsonplaceholder.typicode.com/posts')
-            .then(data => data.json())
-            .then(articles => {
-                setTimeout(() => {
-                    dispatch({
-                        type: 'GET_ARTICLES_SUCCESS',
-                        articles: articles
-                    })
-                }, 1000)
-            })
-            .catch(error => {
-                console.log('error', error)
-                dispatch(err => ({type: 'GET_ARTICLES_ERROR', error}))
-            })
-    }
-}
-
-function increment() {
-    return {type: INCREMENT}
-}
-
-function decrement() {
-    return {type: DECREMENT}
-}
-
-function addToDo(todo) {
-    return {type: ADD_TODO, text: todo}
-}
-
-function removeToDo(index) {
-    return {type: REMOVE_TODO, index}
-}
-
-function editToDo({index, text}) {
-    return {type: EDIT_TODO, index, text}
-}
-
-function enableToDo(index) {
-    return {type: ENABLE_TODO, index}
-}
-
-function selectToDo(todo) {
-    return {type: SELECT_TODO, todo}
-}
-
 export {
     getCourses,
+    getLessons,
     addCourse,
     addLesson,
     openAddCourseModal,
     closeAddCourseModal,
-    getArticles,
-    addToDo,
-    editToDo,
-    removeToDo,
-    enableToDo,
-    selectToDo,
-    increment,
-    decrement
 }

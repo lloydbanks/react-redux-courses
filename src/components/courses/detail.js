@@ -1,11 +1,16 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {connect} from 'react-redux'
 import NotFound from '../404'
 import {Link} from '@reach/router'
 import NewLesson from './newLesson'
 import {getLessonsByCourse, getCourseById} from '../../store/selectors'
+import {getLessons} from '../../store/actions'
 
-const CourseDetail = ({id, course, lessons, loading}) => {
+const CourseDetail = ({id, course, lessons, loading, getLessons}) => {
+    useEffect(() => {
+        getLessons(course.id)
+    }, [course])
+
     if(loading) return <div>Loading...</div>
     if(!course) return <NotFound />
 
@@ -49,4 +54,4 @@ const mapState = (state, props) => {
     }
 }
 
-export default connect(mapState)(CourseDetail)
+export default connect(mapState, {getLessons})(CourseDetail)
