@@ -1,7 +1,8 @@
 import React, {useState, useRef, useEffect} from 'react'
 import {connect} from 'react-redux'
+import {deleteLesson} from '../../store/actions'
 
-const Lesson = ({onSubmit, lesson, children}) => {
+const Lesson = ({onSubmit, lesson, deleteLesson, children}) => {
     const initialValue = lesson ? lesson.title : ''
     const [editing, setEditing] = useState(false)
     const [title, setTitle] = useState(initialValue)
@@ -24,9 +25,8 @@ const Lesson = ({onSubmit, lesson, children}) => {
         reset()
     }
 
-    const beginEditing = () => {
-        setEditing(true)
-    }
+    const handleEdit = () => setEditing(true)
+    const handleDelete = () => deleteLesson(lesson)
 
     return editing ? (
         <>
@@ -44,8 +44,8 @@ const Lesson = ({onSubmit, lesson, children}) => {
             </form>
         </>
     ) : (
-            children(beginEditing)
+            children(handleEdit, handleDelete)
         )
 }
 
-export default connect(null)(Lesson)
+export default connect(null, {deleteLesson})(Lesson)

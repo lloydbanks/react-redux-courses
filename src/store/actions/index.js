@@ -13,12 +13,15 @@ import {
     ADD_LESSON_BEGIN,
     ADD_LESSON_SUCCESS,
     ADD_LESSON_ERROR,
+    DELETE_LESSON_BEGIN,
+    DELETE_LESSON_SUCCESS,
+    DELETE_LESSON_ERROR,
     SAVE_LESSON_BEGIN,
     SAVE_LESSON_SUCCESS,
     SAVE_LESSON_ERROR
 } from '../constants'
 
-import {fetchCourses, fetchLessons, createCourse, createLesson, updateLesson} from '../api'
+import {fetchCourses, fetchLessons, createCourse, createLesson, updateLesson, removeLesson} from '../api'
 
 const getCourses = () => {
     return dispatch => {
@@ -90,6 +93,20 @@ const saveLesson = (lesson) => {
     }
 }
 
+const deleteLesson = (lesson) => {
+    return dispatch => {
+        dispatch({type: DELETE_LESSON_BEGIN})
+
+        return removeLesson(lesson)
+            .then(() => {
+                dispatch({type: DELETE_LESSON_SUCCESS, payload: lesson})
+            })
+            .catch(error => {
+                dispatch({type: DELETE_LESSON_ERROR, error})
+            })
+    }
+}
+
 const openAddCourseModal = () => ({
     type: OPEN_ADD_COURSE_MODAL
 })
@@ -104,6 +121,7 @@ export {
     addCourse,
     addLesson,
     saveLesson,
+    deleteLesson,
     openAddCourseModal,
     closeAddCourseModal,
 }

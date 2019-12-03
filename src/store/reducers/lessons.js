@@ -8,6 +8,7 @@ import {
     SAVE_LESSON_BEGIN,
     SAVE_LESSON_SUCCESS,
     SAVE_LESSON_ERROR,
+    DELETE_LESSON_SUCCESS,
 } from '../constants'
 import produce from 'immer'
 
@@ -50,9 +51,15 @@ const reducer = produce((draft, action) => {
             draft.error = action.error
 
             break
+        case DELETE_LESSON_SUCCESS:
+            draft.loading = false
+            draft.error = null
+            delete draft.data[action.payload.id]
+
+            break
         default:
             return
     }
-}, {data: {}, lessonsLoading: false, error: null, saving: false})
+}, {data: {}, loading: false, error: null, saving: false})
 
 export default reducer

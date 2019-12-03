@@ -12,6 +12,10 @@ function updateLesson(lesson) {
     return fetchData(PREFIX + `/lessons/${lesson.id}`, lesson, 'PUT')
 }
 
+function removeLesson(lesson) {
+    return fetchData(PREFIX + `/lessons/${lesson.id}`, null, 'DELETE')
+}
+
 function fetchCourses() {
     return getData(PREFIX + '/courses')
 }
@@ -26,7 +30,7 @@ function fetchData(url = '', data = {}, method = 'POST') {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: data !== null ? JSON.stringify(data) : null
     }).then(response => response.json())
 }
 
@@ -34,4 +38,4 @@ function getData(url = '') {
     return fetch(url).then(response => response.json())
 }
 
-export {createCourse, createLesson, updateLesson, fetchCourses, fetchLessons}
+export {createCourse, createLesson, updateLesson, removeLesson, fetchCourses, fetchLessons}

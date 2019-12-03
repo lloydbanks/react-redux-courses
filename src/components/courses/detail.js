@@ -31,11 +31,18 @@ const CourseDetail = ({id, course, lessons, loading, getLessons, addLesson, save
                                     ...lesson,
                                     title
                                 })}>
-                                    {edit => (
-                                        <button type="button" className="lesson-item btn" onClick={() => edit(lesson.title)}>
+                                    {(edit, remove) => (
+                                        <>
+                                        <button type="button" className="lesson-item btn">
                                             {lesson.title}
-                                            <span className="ml-2 badge badge-primary">Edit</span>
+                                            <span
+                                                className="ml-2 badge badge-primary"
+                                                onClick={() => edit(lesson.title)}>Edit</span>
+                                            <span
+                                                className="ml-2 badge badge-danger"
+                                                onClick={() => remove(lesson)}>Remove</span>
                                         </button>
+                                        </>
                                     )}
                                 </Lesson>
                             </li>))}
