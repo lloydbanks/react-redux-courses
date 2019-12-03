@@ -18,7 +18,8 @@ import {
     DELETE_LESSON_ERROR,
     SAVE_LESSON_BEGIN,
     SAVE_LESSON_SUCCESS,
-    SAVE_LESSON_ERROR
+    SAVE_LESSON_ERROR,
+    SET_LESSON_MARKDOWN
 } from '../constants'
 
 import {fetchCourses, fetchLessons, createCourse, createLesson, updateLesson, removeLesson} from '../api'
@@ -93,6 +94,24 @@ const saveLesson = (lesson) => {
     }
 }
 
+let saveTimer = null
+const setLessonMarkdown = (lesson, markdown) => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: SET_LESSON_MARKDOWN,
+            payload: {
+                lesson, markdown
+            }
+        })
+
+        if(saveTimer) clearTimeout(saveTimer)
+        saveTimer = setTimeout(() => {
+            const latest = getState().lessons.data[lesson.id]
+            dispatch(saveLesson(latest))
+        }, 1000)
+    }
+}
+
 const deleteLesson = (lesson) => {
     return dispatch => {
         dispatch({type: DELETE_LESSON_BEGIN})
@@ -121,6 +140,7 @@ export {
     addCourse,
     addLesson,
     saveLesson,
+    setLessonMarkdown,
     deleteLesson,
     openAddCourseModal,
     closeAddCourseModal,

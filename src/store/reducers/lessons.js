@@ -9,6 +9,7 @@ import {
     SAVE_LESSON_SUCCESS,
     SAVE_LESSON_ERROR,
     DELETE_LESSON_SUCCESS,
+    SET_LESSON_MARKDOWN
 } from '../constants'
 import produce from 'immer'
 
@@ -55,6 +56,11 @@ const reducer = produce((draft, action) => {
             draft.loading = false
             draft.error = null
             delete draft.data[action.payload.id]
+
+            break
+        case SET_LESSON_MARKDOWN:
+            const {lesson, markdown} = action.payload
+            draft.data[lesson.id].markdown = markdown
 
             break
         default:
