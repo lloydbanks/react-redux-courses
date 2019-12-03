@@ -1,10 +1,10 @@
 import React, {useState, useRef, useEffect} from 'react'
 import {connect} from 'react-redux'
-import {addLesson} from '../../store/actions'
 
-const NewLesson = ({lessons, addLesson, courseId}) => {
+const Lesson = ({onSubmit, lesson, children}) => {
+    const initialValue = lesson ? lesson.title : ''
     const [editing, setEditing] = useState(false)
-    const [title, setTitle] = useState('')
+    const [title, setTitle] = useState(initialValue)
     const inputRef = useRef()
 
     useEffect(() => {
@@ -12,21 +12,25 @@ const NewLesson = ({lessons, addLesson, courseId}) => {
     }, [editing])
 
     const reset = () => {
-        setTitle('')
+        setTitle(initialValue)
         setEditing(false)
     }
 
-    const handleSubmit = e => {
+    const editLesson = e => {
         e.preventDefault()
 
-        addLesson({title, courseId})
+        onSubmit(title)
         inputRef.current.focus()
         reset()
     }
 
+    const beginEditing = () => {
+        setEditing(true)
+    }
+
     return editing ? (
         <>
-            <form className="mt-1" onSubmit={handleSubmit}>
+            <form className="mt-1" onSubmit={editLesson}>
                 <div className="form-group">
                     <input type="text"
                            className="form-control"
@@ -40,8 +44,8 @@ const NewLesson = ({lessons, addLesson, courseId}) => {
             </form>
         </>
     ) : (
-            <button className="btn btn-success" onClick={() => setEditing(true)}>Add new lesson</button>
+            children(beginEditing)
         )
 }
 
-export default connect(null, {addLesson})(NewLesson)
+export default connect(null)(Lesson)

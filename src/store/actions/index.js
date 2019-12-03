@@ -103,6 +103,7 @@ export {
     getLessons,
     addCourse,
     addLesson,
+    saveLesson,
     openAddCourseModal,
     closeAddCourseModal,
 }

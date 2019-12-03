@@ -9,15 +9,7 @@ function createLesson({title, courseId}) {
 }
 
 function updateLesson(lesson) {
-    return putData(PREFIX + `/lessons/${lesson.id}`, lesson)
-}
-
-function postData(url = '', data = {}) {
-    return fetchData(url, data, 'POST')
-}
-
-function putData(url = '', data = {}) {
-    return fetchData(url, data, 'PUT')
+    return fetchData(PREFIX + `/lessons/${lesson.id}`, lesson, 'PUT')
 }
 
 function fetchCourses() {
@@ -28,9 +20,9 @@ function fetchLessons(courseId) {
     return getData(PREFIX + '/lessons?courseId=' + courseId)
 }
 
-function fetchData(url = '', data = {}) {
+function fetchData(url = '', data = {}, method = 'POST') {
     return fetch(url, {
-        method: 'POST',
+        method,
         headers: {
             'Content-Type': 'application/json'
         },

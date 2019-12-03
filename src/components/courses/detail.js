@@ -2,13 +2,13 @@ import React, {useEffect} from 'react'
 import {connect} from 'react-redux'
 import NotFound from '../404'
 import {Link} from '@reach/router'
-import NewLesson from './newLesson'
+import Lesson from './lesson'
 import {getLessonsByCourse, getCourseById} from '../../store/selectors'
-import {getLessons} from '../../store/actions'
+import {getLessons, addLesson, saveLesson} from '../../store/actions'
 
-const CourseDetail = ({id, course, lessons, loading, getLessons}) => {
+const CourseDetail = ({id, course, lessons, loading, getLessons, addLesson, saveLesson}) => {
     useEffect(() => {
-        getLessons(course.id)
+        getLessons(id)
     }, [course])
 
     if(loading) return <div>Loading...</div>
@@ -22,13 +22,30 @@ const CourseDetail = ({id, course, lessons, loading, getLessons}) => {
                         Course Lessons
                     </div>
                     <div className="card-body">
-                        {lessons.length ? <ul>
+                        {lessons.length ? <ol>
                             {lessons.map(lesson => (<li key={lesson.id}>
-                                <h5>{lesson.title}</h5>
+                                <Lesson
+                                    className="lesson-item"
+                                    lesson={lesson}
+                                    onSubmit={title => saveLesson({
+                                    ...lesson,
+                                    title
+                                })}>
+                                    {edit => (
+                                        <button type="button" className="lesson-item btn" onClick={() => edit(lesson.title)}>
+                                            {lesson.title}
+                                            <span className="ml-2 badge badge-primary">Edit</span>
+                                        </button>
+                                    )}
+                                </Lesson>
                             </li>))}
-                        </ul> : <p>No lesssons found</p>}
+                        </ol> : <p>No lesssons found</p>}
 
-                        <NewLesson courseId={id} />
+                        <Lesson onSubmit={title => addLesson({title, courseId: course.id})}>
+                            {edit => (
+                                <button className="btn btn-success" onClick={edit}>Add new lesson</button>
+                            )}
+                        </Lesson>
                     </div>
                 </div>
                 <div className="col-md-8">
@@ -54,4 +71,4 @@ const mapState = (state, props) => {
     }
 }
 
-export default connect(mapState, {getLessons})(CourseDetail)
+export default connect(mapState, {getLessons, addLesson, saveLesson})(CourseDetail)
