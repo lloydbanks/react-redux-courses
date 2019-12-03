@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react'
 import {connect} from 'react-redux'
 import NotFound from '../404'
-import {Link} from '@reach/router'
+import {Link, Match} from '@reach/router'
 import Lesson from './lesson'
 import {getLessonsByCourse, getCourseById} from '../../store/selectors'
 import {getLessons, addLesson, saveLesson} from '../../store/actions'
 
-const CourseDetail = ({id, course, lessons, loading, getLessons, addLesson, saveLesson}) => {
+const CourseDetail = ({id, course, lessons, loading, getLessons, addLesson, saveLesson, children}) => {
     useEffect(() => {
         getLessons(id)
     }, [course])
@@ -23,29 +23,36 @@ const CourseDetail = ({id, course, lessons, loading, getLessons, addLesson, save
                     </div>
                     <div className="card-body">
                         {lessons.length ? <ol>
-                            {lessons.map(lesson => (<li key={lesson.id}>
-                                <Lesson
-                                    className="lesson-item"
-                                    lesson={lesson}
-                                    onSubmit={title => saveLesson({
-                                    ...lesson,
-                                    title
-                                })}>
-                                    {(edit, remove) => (
-                                        <>
-                                        <button type="button" className="lesson-item btn">
-                                            {lesson.title}
-                                            <span
-                                                className="ml-2 badge badge-primary"
-                                                onClick={() => edit(lesson.title)}>Edit</span>
-                                            <span
-                                                className="ml-2 badge badge-danger"
-                                                onClick={() => remove(lesson)}>Remove</span>
-                                        </button>
-                                        </>
-                                    )}
-                                </Lesson>
-                            </li>))}
+                            {lessons.map(lesson => (
+                                <Match key={lesson.id} path={`lessons/${lesson.id}`}>
+                                    {({match}) => {
+                                        const className = `lesson-item ${match ? 'bg-light border' : ''}`
+
+                                        return <li>
+                                            <Lesson
+                                                className={className}
+                                                lesson={lesson}
+                                                onSubmit={title => saveLesson({
+                                                    ...lesson,
+                                                    title
+                                                })}>
+                                                {(edit, remove) => (
+                                                    <Link to={`lessons/${lesson.id}`}>
+                                                        <button type="button" className={className + ' btn'}>
+                                                            {lesson.title}
+                                                            <span
+                                                                className="ml-2 badge badge-primary"
+                                                                onClick={() => edit(lesson.title)}>Edit</span>
+                                                            <span
+                                                                className="ml-2 badge badge-danger"
+                                                                onClick={() => remove(lesson)}>Remove</span>
+                                                        </button>
+                                                    </Link>
+                                                )}
+                                            </Lesson>
+                                        </li>
+                                    }}
+                                </Match>))}
                         </ol> : <p>No lesssons found</p>}
 
                         <Lesson onSubmit={title => addLesson({title, courseId: course.id})}>
@@ -53,6 +60,10 @@ const CourseDetail = ({id, course, lessons, loading, getLessons, addLesson, save
                                 <button className="btn btn-success" onClick={edit}>Add new lesson</button>
                             )}
                         </Lesson>
+
+                        <div className="lesson">
+                            {children}
+                        </div>
                     </div>
                 </div>
                 <div className="col-md-8">
