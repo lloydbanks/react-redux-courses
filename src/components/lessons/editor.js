@@ -6,7 +6,9 @@ const LessonEditor = ({lesson, setLessonMarkdown}) => {
     return (
         <>
             <div className="lesson-editor">
-                <p>You're editing this lesson. Changes are saved automatically</p>
+                <p>You can use <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">
+                    markdown
+                </a> to edit this lesson. Changes are saved automatically</p>
             </div>
 
             <div className="form-group">

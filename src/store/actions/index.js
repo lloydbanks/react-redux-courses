@@ -19,7 +19,7 @@ import {
     SAVE_LESSON_BEGIN,
     SAVE_LESSON_SUCCESS,
     SAVE_LESSON_ERROR,
-    SET_LESSON_MARKDOWN
+    SET_LESSON_MARKDOWN, TOGGLE_PREVIEW_MODE
 } from '../constants'
 
 import {fetchCourses, fetchLessons, createCourse, createLesson, updateLesson, removeLesson} from '../api'
@@ -134,6 +134,10 @@ const closeAddCourseModal = () => ({
     type: CLOSE_ADD_COURSE_MODAL
 })
 
+const togglePreviewMode = () => ({
+    type: TOGGLE_PREVIEW_MODE
+})
+
 export {
     getCourses,
     getLessons,
@@ -144,4 +148,5 @@ export {
     deleteLesson,
     openAddCourseModal,
     closeAddCourseModal,
+    togglePreviewMode
 }

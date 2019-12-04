@@ -4,9 +4,20 @@ import NotFound from '../404'
 import {Link, Match} from '@reach/router'
 import Lesson from './lesson'
 import {getLessonsByCourse, getCourseById} from '../../store/selectors'
-import {getLessons, addLesson, saveLesson} from '../../store/actions'
+import {getLessons, addLesson, saveLesson, togglePreviewMode} from '../../store/actions'
 
-const CourseDetail = ({id, course, lessons, loading, getLessons, addLesson, saveLesson, children}) => {
+const CourseDetail = ({
+    id,
+    course,
+    lessons,
+    loading,
+    getLessons,
+    addLesson,
+    saveLesson,
+    children,
+    previewMode,
+    togglePreviewMode
+}) => {
     useEffect(() => {
         getLessons(id)
     }, [course])
@@ -61,9 +72,19 @@ const CourseDetail = ({id, course, lessons, loading, getLessons, addLesson, save
                             )}
                         </Lesson>
 
-                        <div className="lesson">
-                            {children}
-                        </div>
+                        {!!lessons.length &&
+                            <Match path={`lessons/:lessonId`}>
+                                {({match}) => {
+                                    return match && <div className="lesson mt-2">
+                                        <hr/>
+                                        <button onClick={togglePreviewMode} className="btn btn-secondary btn-sm">
+                                            {previewMode ? 'Edit' : 'Preview'}
+                                        </button>
+                                        {children}
+                                    </div>
+                                }}
+                            </Match>
+                        }
                     </div>
                 </div>
                 <div className="col-md-8">
@@ -83,10 +104,11 @@ const CourseDetail = ({id, course, lessons, loading, getLessons, addLesson, save
 
 const mapState = (state, props) => {
     return {
+        previewMode: state.app.previewMode,
         loading: state.courses.loading,
         course: getCourseById(state, props),
         lessons: getLessonsByCourse(state, props)
     }
 }
 
-export default connect(mapState, {getLessons, addLesson, saveLesson})(CourseDetail)
+export default connect(mapState, {getLessons, addLesson, saveLesson, togglePreviewMode})(CourseDetail)
