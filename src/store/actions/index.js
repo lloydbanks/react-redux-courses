@@ -22,7 +22,7 @@ import {
     SET_LESSON_MARKDOWN, TOGGLE_PREVIEW_MODE
 } from '../constants'
 
-import {fetchCourses, fetchLessons, createCourse, createLesson, updateLesson, removeLesson} from '../api'
+import {fetchCourses, fetchLessons, createLesson, updateLesson, removeLesson} from '../api'
 
 const getCourses = () => {
     return dispatch => {
@@ -53,12 +53,14 @@ const getLessons = (courseId) => {
 }
 
 const addCourse = ({title, price}) => {
-    return dispatch => {
+    return (dispatch, getState, getFirebase) => {
         dispatch({type: ADD_COURSE_BEGIN})
 
-        createCourse({title, price})
+        return getFirebase()
+            .ref('courses')
+            .push({title, price})
             .then(course => {
-                dispatch({type: ADD_COURSE_SUCCESS, payload: course})
+                dispatch({type: ADD_COURSE_SUCCESS, payload: {title, price, id: course.key}})
             })
             .catch(error => {
                 dispatch({type: ADD_COURSE_ERROR, error})
