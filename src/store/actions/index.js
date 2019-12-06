@@ -34,7 +34,7 @@ const getCourses = () => {
     return dispatch => {
         dispatch({type: GET_COURSES_BEGIN})
 
-        db.collection('courses').get()
+        db.collection('courses').orderBy('title').get()
             .then(snaps => {
                 const courses = []
                 snaps.forEach((snap) => {
@@ -64,14 +64,12 @@ const getLessons = (courseId) => {
 }
 
 const addCourse = ({title, price}) => {
-    return (dispatch, getState, getFirebase) => {
+    return dispatch => {
         dispatch({type: ADD_COURSE_BEGIN})
 
-        return getFirebase()
-            .ref('courses')
-            .push({title, price})
+        return db.collection('courses').add({title, price})
             .then(course => {
-                dispatch({type: ADD_COURSE_SUCCESS, payload: {title, price, id: course.key}})
+                dispatch({type: ADD_COURSE_SUCCESS, payload: {title, price, id: course.id}})
             })
             .catch(error => {
                 dispatch({type: ADD_COURSE_ERROR, error})
