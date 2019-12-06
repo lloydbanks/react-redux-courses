@@ -81,13 +81,22 @@ const addLesson = ({title, courseId}) => {
     return dispatch => {
         dispatch({type: ADD_LESSON_BEGIN})
 
-        createLesson({title, courseId})
+        return db.collection('lessons').add({title, courseId})
+            .then(({id}) => {
+                console.log({id, title, courseId})
+                dispatch({type: ADD_LESSON_SUCCESS, payload: {id, title, courseId}})
+            })
+            .catch(error => {
+                dispatch({type: ADD_LESSON_ERROR, error})
+            })
+
+        /*createLesson({title, courseId})
             .then(course => {
                 dispatch({type: ADD_LESSON_SUCCESS, payload: course})
             })
             .catch(error => {
                 dispatch({type: ADD_LESSON_ERROR, error})
-            })
+            })*/
     }
 }
 

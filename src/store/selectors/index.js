@@ -8,7 +8,7 @@ export const getLessonsByCourse = createSelector(
     getLessons,
     parseCourseId,
     (lessons, courseId) => lessons.filter(
-        lesson => +lesson.courseId === courseId
+        lesson => lesson.courseId === courseId
     )
 )
 
