@@ -1,5 +1,8 @@
 import React from 'react'
+import 'firebase/firestore'
 import {connect} from 'react-redux'
+import {compose} from 'redux'
+import {firestoreConnect} from 'react-redux-firebase'
 import {Link} from '@reach/router'
 import Modal from 'react-modal'
 import AddForm from './add'
@@ -44,4 +47,6 @@ const mapState = ({courses}) => ({
 
 const mapDispatch = {openAddCourseModal, closeAddCourseModal}
 
-export default connect(mapState, mapDispatch)(CourseList)
+export default compose(
+    firestoreConnect(() => ['courses']),
+    connect(mapState, mapDispatch))(CourseList)

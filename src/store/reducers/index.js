@@ -1,4 +1,4 @@
-import { ReactReduxFirebaseProvider, firebaseReducer } from 'react-redux-firebase'
+import {firebaseReducer} from 'react-redux-firebase'
 import {combineReducers} from 'redux'
 import app from './app'
 import courses from './courses'

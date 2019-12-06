@@ -15,19 +15,14 @@ import 'firebase/auth'
 import 'firebase/database'
 import {ReactReduxFirebaseProvider, getFirebase} from 'react-redux-firebase'
 import {createFirestoreInstance} from 'redux-firestore'
-import {fbConfig, rrfConfig} from './store/firebase/config'
+import {rrfConfig} from './store/firebase/config'
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-const middlewares = [
-    thunk.withExtraArgument(getFirebase)
-]
+const middlewares = [thunk.withExtraArgument(getFirebase)]
 const store = createStore(
     rootReducer,
     composeEnhancer(applyMiddleware(...middlewares))
 )
-
-firebase.initializeApp(fbConfig)
-
 const rrfProps = {
     firebase,
     config: rrfConfig,
@@ -35,7 +30,7 @@ const rrfProps = {
     createFirestoreInstance // <- needed if using firestore
 }
 
-// store.dispatch(getCourses())
+store.dispatch(getCourses())
 
 Modal.setAppElement('#root')
 ReactDOM.render(

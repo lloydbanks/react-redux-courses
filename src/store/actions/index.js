@@ -22,14 +22,25 @@ import {
     SET_LESSON_MARKDOWN, TOGGLE_PREVIEW_MODE
 } from '../constants'
 
-import {fetchCourses, fetchLessons, createLesson, updateLesson, removeLesson} from '../api'
+import {fetchLessons, createLesson, updateLesson, removeLesson} from '../api'
+
+import firebase from 'firebase/app'
+import 'firebase/database'
+import {fbConfig} from '../firebase/config'
+firebase.initializeApp(fbConfig)
+const db = firebase.firestore()
 
 const getCourses = () => {
     return dispatch => {
         dispatch({type: GET_COURSES_BEGIN})
 
-        fetchCourses()
-            .then(courses => {
+        db.collection('courses').get()
+            .then(snaps => {
+                const courses = []
+                snaps.forEach((snap) => {
+                    courses.push({id: snap.id, ...snap.data()})
+                })
+
                 dispatch({type: GET_COURSES_SUCCESS, payload: courses})
             })
             .catch(error => {
