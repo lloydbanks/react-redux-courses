@@ -2,7 +2,7 @@ import {createSelector} from 'reselect'
 
 const getLessons = state => Object.values(state.lessons.data)
 const getCourses = state => state.courses.data
-const parseCourseId = (state, props) => parseInt(props.id)
+const parseCourseId = (state, props) => props.id
 
 export const getLessonsByCourse = createSelector(
     getLessons,
@@ -16,7 +16,7 @@ export const getCourseById = createSelector(
     getCourses,
     parseCourseId,
     (courses, courseId) => courses.find(
-        course => +course.id === courseId
+        course => course.id === courseId
     )
 )
 
