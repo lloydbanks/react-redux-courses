@@ -15,6 +15,7 @@ const LessonEditor = ({lesson, setLessonMarkdown}) => {
                 <textarea onChange={e => {setLessonMarkdown(lesson, e.target.value)}}
                           className="form-control"
                           value={lesson.markdown || ''}
+                          placeholder="Enter lesson description"
                           rows="3"></textarea>
             </div>
         </>
