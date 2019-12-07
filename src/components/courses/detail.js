@@ -48,23 +48,33 @@ const CourseDetail = ({
                                                     title
                                                 })}>
                                                 {(edit, remove) => (
+                                                    <>
                                                     <Link to={`lessons/${lesson.id}`}>
                                                         <button type="button" className={className + ' btn'}>
                                                             {lesson.title}
-                                                            <span
-                                                                className="ml-2 badge badge-primary"
-                                                                onClick={() => edit(lesson.title)}>Edit</span>
-                                                            <span
-                                                                className="ml-2 badge badge-danger"
-                                                                onClick={() => remove(lesson)}>Remove</span>
                                                         </button>
                                                     </Link>
+                                                    <a
+                                                        href="#edit"
+                                                        className="ml-2 badge badge-primary"
+                                                        onClick={(e) => {
+                                                            e.preventDefault()
+                                                            edit(lesson.title)
+                                                        }}>Edit</a>
+                                                    <a
+                                                        href="#remove"
+                                                        className="ml-2 badge badge-danger"
+                                                        onClick={(e) => {
+                                                            e.preventDefault()
+                                                            remove(lesson)
+                                                        }}>Remove</a>
+                                                    </>
                                                 )}
                                             </Lesson>
                                         </li>
                                     }}
                                 </Match>))}
-                        </ol> : <p>No lesssons found</p>}
+                        </ol> : <p>No lessons found</p>}
 
                         <Lesson onSubmit={title => addLesson({title, courseId: course.id})}>
                             {edit => (
