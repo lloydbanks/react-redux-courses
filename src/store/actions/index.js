@@ -22,24 +22,16 @@ import {
     SET_LESSON_MARKDOWN, TOGGLE_PREVIEW_MODE
 } from '../constants'
 
-import {fetchLessons, createLesson, updateLesson, removeLesson} from '../api'
-
-import firebase from 'firebase/app'
-import 'firebase/database'
-import {fbConfig} from '../firebase/config'
-firebase.initializeApp(fbConfig)
-const db = firebase.firestore()
+import {fetchCourses, createCourse, fetchLessons, createLesson, updateLesson, removeLesson} from '../api'
 
 const getCourses = () => {
     return dispatch => {
         dispatch({type: GET_COURSES_BEGIN})
 
-        db.collection('courses').orderBy('title').get()
+        fetchCourses()
             .then(snaps => {
                 const courses = []
-                snaps.forEach((snap) => {
-                    courses.push({id: snap.id, ...snap.data()})
-                })
+                snaps.forEach(snap => courses.push({id: snap.id, ...snap.data()}))
 
                 dispatch({type: GET_COURSES_SUCCESS, payload: courses})
             })
@@ -53,8 +45,7 @@ const getLessons = (courseId) => {
     return dispatch => {
         dispatch({type: GET_LESSONS_BEGIN})
 
-        db.collection('lessons').where('courseId', '==', courseId)
-            .orderBy('title').get()
+        fetchLessons(courseId)
             .then(snaps => {
                 const lessons = []
                 snaps.forEach(snap => lessons.push({id: snap.id, ...snap.data()}))
@@ -71,7 +62,7 @@ const addCourse = ({title, price}) => {
     return dispatch => {
         dispatch({type: ADD_COURSE_BEGIN})
 
-        return db.collection('courses').add({title, price})
+        createCourse()
             .then(course => {
                 dispatch({type: ADD_COURSE_SUCCESS, payload: {title, price, id: course.id}})
             })
@@ -85,7 +76,7 @@ const addLesson = ({title, courseId}) => {
     return dispatch => {
         dispatch({type: ADD_LESSON_BEGIN})
 
-        return db.collection('lessons').add({title, courseId})
+        createLesson({title, courseId})
             .then(({id}) => {
                 dispatch({type: ADD_LESSON_SUCCESS, payload: {id, title, courseId}})
             })
@@ -99,8 +90,8 @@ const saveLesson = (lesson) => {
     return dispatch => {
         dispatch({type: SAVE_LESSON_BEGIN})
 
-        return db.collection('lessons').doc(lesson.id).set(lesson)
-            .then(lesson => {
+        updateLesson(lesson)
+            .then(() => {
                 dispatch({type: SAVE_LESSON_SUCCESS, payload: lesson})
             })
             .catch(error => {
@@ -131,7 +122,7 @@ const deleteLesson = (lesson) => {
     return dispatch => {
         dispatch({type: DELETE_LESSON_BEGIN})
 
-        return db.collection('lessons').doc(lesson.id).delete()
+        removeLesson(lesson)
             .then(() => {
                 dispatch({type: DELETE_LESSON_SUCCESS, payload: lesson})
             })

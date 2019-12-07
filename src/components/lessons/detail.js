@@ -4,8 +4,9 @@ import LessonEditor from './editor'
 import NotFoundPage from '../404'
 import ReactMarkdown from 'react-markdown'
 
-const LessonDetail = ({lesson, loading, previewMode}) => {
+const LessonDetail = ({lesson, loading, error, previewMode}) => {
     if(loading) return <div>Loading...</div>
+    if(error) return <div className="text-danger">{error.message}</div>
     if(!lesson) return <NotFoundPage />
 
     return previewMode ?
@@ -20,7 +21,8 @@ const mapState = (state, props) => {
     return {
         previewMode: state.app.previewMode,
         lesson: lessons.data[lessonId],
-        loading: lessons.loading
+        loading: lessons.loading,
+        error: lessons.error
     }
 }
 

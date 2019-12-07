@@ -1,41 +1,33 @@
-const PREFIX = '/api'
+import firebase from 'firebase/app'
+import 'firebase/database'
+import {fbConfig} from '../firebase/config'
+firebase.initializeApp(fbConfig)
+const db = firebase.firestore()
 
 function createCourse({title, price}) {
-    return fetchData(PREFIX + '/courses', {title, price})
+    return db.collection('courses').add({title, price})
 }
 
 function createLesson({title, courseId}) {
-    return fetchData(PREFIX + '/lessons', {title, courseId})
+    return db.collection('lessons').add({title, courseId})
 }
 
 function updateLesson(lesson) {
-    return fetchData(PREFIX + `/lessons/${lesson.id}`, lesson, 'PUT')
+    return db.collection('lessons').doc(lesson.id).set(lesson)
 }
 
 function removeLesson(lesson) {
-    return fetchData(PREFIX + `/lessons/${lesson.id}`, null, 'DELETE')
+    return db.collection('lessons').doc(lesson.id).delete()
 }
 
 function fetchCourses() {
-    return getData(PREFIX + '/courses')
+    return db.collection('courses').orderBy('title').get()
 }
 
 function fetchLessons(courseId) {
-    return getData(PREFIX + '/lessons?courseId=' + courseId)
-}
-
-function fetchData(url = '', data = {}, method = 'POST') {
-    return fetch(url, {
-        method,
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: data !== null ? JSON.stringify(data) : null
-    }).then(response => response.json())
-}
-
-function getData(url = '') {
-    return fetch(url).then(response => response.json())
+    return db.collection('lessons')
+        .where('courseId', '==', courseId)
+        .orderBy('title').get()
 }
 
 export {createCourse, createLesson, updateLesson, removeLesson, fetchCourses, fetchLessons}
