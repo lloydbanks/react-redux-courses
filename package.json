@@ -22,6 +22,10 @@
     "server": "json-server db.json --routes routes.json -w -p 8080"
   },
   "proxy": "http://localhost:8080/",
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -39,6 +43,7 @@
   },
   "devDependencies": {
     "eslint": "^6.6.0",
+    "prettier": "1.19.1",
     "react-redux": "^7.1.1",
     "redux": "^4.0.4"
   }
