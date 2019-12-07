@@ -131,7 +131,7 @@ const deleteLesson = (lesson) => {
     return dispatch => {
         dispatch({type: DELETE_LESSON_BEGIN})
 
-        return removeLesson(lesson)
+        return db.collection('lessons').doc(lesson.id).delete()
             .then(() => {
                 dispatch({type: DELETE_LESSON_SUCCESS, payload: lesson})
             })
