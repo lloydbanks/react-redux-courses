@@ -53,8 +53,12 @@ const getLessons = (courseId) => {
     return dispatch => {
         dispatch({type: GET_LESSONS_BEGIN})
 
-        fetchLessons(courseId)
-            .then(lessons => {
+        db.collection('lessons').where('courseId', '==', courseId)
+            .orderBy('title').get()
+            .then(snaps => {
+                const lessons = []
+                snaps.forEach(snap => lessons.push({id: snap.id, ...snap.data()}))
+
                 dispatch({type: GET_LESSONS_SUCCESS, payload: lessons})
             })
             .catch(error => {
@@ -83,20 +87,11 @@ const addLesson = ({title, courseId}) => {
 
         return db.collection('lessons').add({title, courseId})
             .then(({id}) => {
-                console.log({id, title, courseId})
                 dispatch({type: ADD_LESSON_SUCCESS, payload: {id, title, courseId}})
             })
             .catch(error => {
                 dispatch({type: ADD_LESSON_ERROR, error})
             })
-
-        /*createLesson({title, courseId})
-            .then(course => {
-                dispatch({type: ADD_LESSON_SUCCESS, payload: course})
-            })
-            .catch(error => {
-                dispatch({type: ADD_LESSON_ERROR, error})
-            })*/
     }
 }
 
