@@ -14,7 +14,7 @@ const LessonDetail = ({lesson, loading, previewMode}) => {
 }
 
 const mapState = (state, props) => {
-    const lessonId = +props.lessonId
+    const lessonId = props.lessonId
     const {lessons} = state
 
     return {

@@ -99,7 +99,7 @@ const saveLesson = (lesson) => {
     return dispatch => {
         dispatch({type: SAVE_LESSON_BEGIN})
 
-        return updateLesson(lesson)
+        return db.collection('lessons').doc(lesson.id).set(lesson)
             .then(lesson => {
                 dispatch({type: SAVE_LESSON_SUCCESS, payload: lesson})
             })
