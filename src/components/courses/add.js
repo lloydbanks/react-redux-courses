@@ -59,7 +59,7 @@ function Add({ dispatch, hasCourses, loading, error }) {
 }
 
 const mapState = ({ courses }) => ({
-  hasCourses: courses.data.length,
+  hasCourses: Object.keys(courses.data).length,
   loading: courses.formLoading,
   error: courses.formError
 })

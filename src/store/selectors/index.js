@@ -13,5 +13,5 @@ export const getLessonsByCourse = createSelector(
 export const getCourseById = createSelector(
   getCourses,
   parseCourseId,
-  (courses, courseId) => courses.find(course => +course.id === courseId)
+  (courses, courseId) => courses[courseId]
 )

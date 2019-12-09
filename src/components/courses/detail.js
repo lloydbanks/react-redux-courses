@@ -147,14 +147,12 @@ const CourseDetail = ({
   )
 }
 
-const mapState = (state, props) => {
-  return {
-    previewMode: state.app.previewMode,
-    loading: state.courses.loading,
-    course: getCourseById(state, props),
-    lessons: getLessonsByCourse(state, props)
-  }
-}
+const mapState = (state, props) => ({
+  previewMode: state.app.previewMode,
+  loading: state.courses.loading,
+  course: getCourseById(state, props),
+  lessons: getLessonsByCourse(state, props)
+})
 
 export default connect(mapState, {
   getLessons,

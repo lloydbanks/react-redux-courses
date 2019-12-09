@@ -3,10 +3,15 @@ import { connect } from 'react-redux'
 import { Link } from '@reach/router'
 import Modal from 'react-modal'
 import AddForm from './add'
-import { openAddCourseModal, closeAddCourseModal } from '../../store/actions'
+import {
+  openAddCourseModal,
+  closeAddCourseModal,
+  deleteCourse
+} from '../../store/actions'
 
 const CourseList = ({
   courses,
+  deleteCourse,
   error,
   loading,
   openAddCourseModal,
@@ -24,16 +29,29 @@ const CourseList = ({
 
       <div className="list-group mb-2">
         {courses.map(course => (
-          <Link
-            to={`/courses/${course.id}`}
-            className="list-group-item list-group-item-action"
+          <div
+            className="list-group-item d-flex justify-content-between list-group-item-action"
             key={course.id}
           >
-            <div className="d-flex w-100 justify-content-between">
+            <Link
+              to={`/courses/${course.id}`}
+              className="text-muted text-decoration-none w-100"
+            >
               <h5 className="mb-1">{course.title}</h5>
-            </div>
-            <small>Price: ${course.price}</small>
-          </Link>
+              <small>Price: ${course.price}</small>
+            </Link>
+            <a
+              href="#deleteCourse"
+              className="text-danger text-decoration-none"
+              onClick={e => {
+                e.preventDefault()
+
+                deleteCourse(course)
+              }}
+            >
+              <span className="badge badge-danger">Delete</span>
+            </a>
+          </div>
         ))}
       </div>
 
@@ -49,12 +67,12 @@ const CourseList = ({
 }
 
 const mapState = ({ courses }) => ({
-  courses: courses.data,
+  courses: Object.values(courses.data),
   error: courses.error,
   loading: courses.loading,
   isOpen: courses.addCourseModalOpen
 })
 
-const mapDispatch = { openAddCourseModal, closeAddCourseModal }
+const mapDispatch = { openAddCourseModal, closeAddCourseModal, deleteCourse }
 
 export default connect(mapState, mapDispatch)(CourseList)

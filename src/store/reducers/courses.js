@@ -5,6 +5,9 @@ import {
   ADD_COURSE_BEGIN,
   ADD_COURSE_SUCCESS,
   ADD_COURSE_ERROR,
+  DELETE_COURSE_BEGIN,
+  DELETE_COURSE_SUCCESS,
+  DELETE_COURSE_ERROR,
   OPEN_ADD_COURSE_MODAL,
   CLOSE_ADD_COURSE_MODAL
 } from '../constants'
@@ -20,7 +23,9 @@ const reducer = produce(
 
         break
       case GET_COURSES_SUCCESS:
-        draft.data = action.payload
+        action.payload.forEach(course => {
+          draft.data[course.id] = course
+        })
         draft.loading = false
 
         break
@@ -43,7 +48,9 @@ const reducer = produce(
 
         break
       case ADD_COURSE_SUCCESS:
-        draft.data.push(action.payload)
+        const { payload } = action
+        draft.data[payload.id] = payload
+
         draft.loading = false
         draft.addCourseModalOpen = false
         draft.formLoading = false
@@ -54,12 +61,28 @@ const reducer = produce(
         draft.formError = action.error
 
         break
+      case DELETE_COURSE_BEGIN:
+        draft.formLoading = true
+        draft.formError = false
+
+        break
+      case DELETE_COURSE_SUCCESS:
+        delete draft.data[action.payload.id]
+        draft.loading = false
+        draft.formLoading = false
+
+        break
+      case DELETE_COURSE_ERROR:
+        draft.formLoading = false
+        draft.formError = action.error
+
+        break
       default:
         return
     }
   },
   {
-    data: [],
+    data: {},
     loading: false,
     error: null,
     formLoading: false,

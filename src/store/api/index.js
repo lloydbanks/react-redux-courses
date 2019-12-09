@@ -16,6 +16,10 @@ function removeLesson(lesson) {
   return fetchData(PREFIX + `/lessons/${lesson.id}`, null, 'DELETE')
 }
 
+function removeCourse(course) {
+  return fetchData(PREFIX + `/courses/${course.id}`, null, 'DELETE')
+}
+
 function fetchCourses() {
   return getData(PREFIX + '/courses')
 }
@@ -43,6 +47,7 @@ export {
   createLesson,
   updateLesson,
   removeLesson,
+  removeCourse,
   fetchCourses,
   fetchLessons
 }

@@ -16,6 +16,9 @@ import {
   DELETE_LESSON_BEGIN,
   DELETE_LESSON_SUCCESS,
   DELETE_LESSON_ERROR,
+  DELETE_COURSE_BEGIN,
+  DELETE_COURSE_SUCCESS,
+  DELETE_COURSE_ERROR,
   SAVE_LESSON_BEGIN,
   SAVE_LESSON_SUCCESS,
   SAVE_LESSON_ERROR,
@@ -29,7 +32,8 @@ import {
   createCourse,
   createLesson,
   updateLesson,
-  removeLesson
+  removeLesson,
+  removeCourse
 } from '../api'
 
 const getCourses = () => {
@@ -135,6 +139,20 @@ const deleteLesson = lesson => {
   }
 }
 
+const deleteCourse = course => {
+  return dispatch => {
+    dispatch({ type: DELETE_COURSE_BEGIN })
+
+    return removeCourse(course)
+      .then(() => {
+        dispatch({ type: DELETE_COURSE_SUCCESS, payload: course })
+      })
+      .catch(error => {
+        dispatch({ type: DELETE_COURSE_ERROR, error })
+      })
+  }
+}
+
 const openAddCourseModal = () => ({
   type: OPEN_ADD_COURSE_MODAL
 })
@@ -155,6 +173,7 @@ export {
   saveLesson,
   setLessonMarkdown,
   deleteLesson,
+  deleteCourse,
   openAddCourseModal,
   closeAddCourseModal,
   togglePreviewMode
