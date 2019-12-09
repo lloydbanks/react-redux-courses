@@ -26,6 +26,13 @@ function removeLesson(lesson) {
     .delete()
 }
 
+function removeCourse(course) {
+  return db
+    .collection('courses')
+    .doc(course.id)
+    .delete()
+}
+
 function fetchCourses() {
   return db
     .collection('courses')
@@ -46,6 +53,7 @@ export {
   createLesson,
   updateLesson,
   removeLesson,
+  removeCourse,
   fetchCourses,
   fetchLessons
 }

@@ -87,7 +87,7 @@ const CourseDetail = ({
                 ))}
               </ol>
             ) : (
-              <p>No lesssons found</p>
+              <p>No lessons found</p>
             )}
 
             <Lesson

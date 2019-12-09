@@ -6,7 +6,8 @@ import {
   ADD_COURSE_SUCCESS,
   ADD_COURSE_ERROR,
   OPEN_ADD_COURSE_MODAL,
-  CLOSE_ADD_COURSE_MODAL
+  CLOSE_ADD_COURSE_MODAL,
+  DELETE_COURSE_SUCCESS
 } from '../constants'
 
 import produce from 'immer'
@@ -20,7 +21,9 @@ const reducer = produce(
 
         break
       case GET_COURSES_SUCCESS:
-        draft.data = action.payload
+        action.payload.forEach(course => {
+          draft.data[course.id] = course
+        })
         draft.loading = false
 
         break
@@ -43,15 +46,22 @@ const reducer = produce(
 
         break
       case ADD_COURSE_SUCCESS:
-        draft.data.push(action.payload)
+        const { payload } = action
+        draft.data[payload.id] = payload
         draft.loading = false
         draft.addCourseModalOpen = false
         draft.formLoading = false
 
         break
+      case DELETE_COURSE_SUCCESS:
+        delete draft.data[action.payload.id]
+        draft.loading = false
+
+        break
       case ADD_COURSE_ERROR:
         draft.formLoading = false
         draft.formError = action.error
+        draft.error = false
 
         break
       default:
@@ -59,7 +69,7 @@ const reducer = produce(
     }
   },
   {
-    data: [],
+    data: {},
     loading: false,
     error: null,
     formLoading: false,
