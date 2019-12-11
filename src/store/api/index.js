@@ -39,7 +39,13 @@ function fetchData(url = '', data = {}, method = 'POST') {
 }
 
 function getData(url = '') {
-  return fetch(url).then(response => response.json())
+  return fetch(url).then(response => {
+    if (response.ok) {
+      return response.json()
+    } else if (response.status === 500) {
+      throw new Error('Server is not running. Please run `yarn server`')
+    }
+  })
 }
 
 export {
