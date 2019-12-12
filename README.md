@@ -1,6 +1,6 @@
 # React redux courses
 Just a sample parody of online courses and lessons.<br />
-Demo: https://mobx-demo-shop.firebaseapp.com/
+Demo: https://redux-courses.firebaseapp.com/courses
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
